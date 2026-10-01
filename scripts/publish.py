@@ -3,7 +3,7 @@
 Credentials stay in memory and are sent only to GitHub. Never printed or committed.
 Run after reviewing the repository and release package.
 """
-import json, os, subprocess, urllib.request, urllib.error
+import hashlib, json, os, subprocess, urllib.request, urllib.error
 from pathlib import Path
 root = Path(__file__).resolve().parents[1]
 env = {**os.environ, 'GIT_TERMINAL_PROMPT':'0', 'GCM_INTERACTIVE':'never',
@@ -16,7 +16,8 @@ headers = {'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json
 def api(path, body=None, method=None):
     payload = json.dumps(body).encode() if body is not None else None
     request = urllib.request.Request('https://api.github.com'+path,data=payload,headers={**headers,'Content-Type':'application/json'},method=method)
-    with urllib.request.urlopen(request,timeout=30) as response: return json.load(response)
+    with urllib.request.urlopen(request,timeout=30) as response:
+        return None if response.status == 204 else json.load(response)
 profile = api('/user')
 owner = profile['login']
 name = 'coursekeep-extension'
@@ -46,7 +47,12 @@ except urllib.error.HTTPError as error:
     if error.code != 404: raise
     release = api(f'/repos/{owner}/{name}/releases', {'tag_name':'v0.1.0','name':'CourseKeep 0.1.0 preview','prerelease':True,'body':'Chrome extension preview. Download the ZIP, extract it, and load its folder in chrome://extensions with Developer mode enabled. No cURL, Python or FFmpeg installation needed. Login/playback detection and full-course saving still require validation in a real Chrome session. Only download content you are authorized to save. See README and bundled privacy statement.'})
 asset = root/'dist/coursekeep-extension-0.1.0.zip'
-if not any(item['name']==asset.name for item in release['assets']):
+existing = next((item for item in release['assets'] if item['name']==asset.name),None)
+digest = 'sha256:'+hashlib.sha256(asset.read_bytes()).hexdigest()
+if existing and existing.get('digest') != digest:
+    api(f'/repos/{owner}/{name}/releases/assets/'+str(existing['id']),method='DELETE')
+    existing = None
+if not existing:
     upload = release['upload_url'].split('{')[0]+'?name='+asset.name
     request = urllib.request.Request(upload,data=asset.read_bytes(),headers={**headers,'Content-Type':'application/zip'},method='POST')
     with urllib.request.urlopen(request,timeout=120) as response:

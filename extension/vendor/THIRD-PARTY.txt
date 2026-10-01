@@ -1,3 +1,7 @@
-@ffmpeg/ffmpeg 0.12.15 - MIT; source: https://github.com/ffmpegwasm/ffmpeg.wasm/tree/v0.12.15
-@ffmpeg/core 0.12.10 - GPL-2.0-or-later; corresponding source and build scripts: https://github.com/ffmpegwasm/ffmpeg.wasm/tree/core-v0.12.10
-FFmpeg sources: https://github.com/ffmpegwasm/ffmpeg.wasm-core
+@ffmpeg/ffmpeg 0.12.15 - MIT
+@ffmpeg/core 0.12.10 - GPL-2.0-or-later
+Official source and build scripts for both packages:
+https://github.com/ffmpegwasm/ffmpeg.wasm/tree/v12.15
+Source archive: https://github.com/ffmpegwasm/ffmpeg.wasm/archive/refs/tags/v12.15.zip
+The build Dockerfile and build scripts identify and download FFmpeg and codec-library sources.
+See vendor/ffmpeg/LICENSE and vendor/core/LICENSE for license texts.
