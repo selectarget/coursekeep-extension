@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>课存 · 浏览器下载器</title><link rel="stylesheet" href="style.css"></head>
+<body><main>
+<header><div class="brand">↓ 课存 <span>CourseKeep / 浏览器扩展</span></div><span class="pill">视频在本机浏览器处理</span></header>
+<section class="hero"><p class="eyebrow">保存课程，继续学习</p><h1>扫码登录一次，<br>把课程留在电脑里。</h1><p>在知识星球官方页面登录并播放视频，然后回到这里下载。无需 cURL，无需安装 Python 或 FFmpeg。</p><div class="actions"><a class="primary" href="https://wx.zsxq.com/" target="_blank" rel="noreferrer">打开知识星球 / 扫码登录 ↗</a><button id="refresh">刷新已识别的视频</button></div></section>
+<section class="card"><h2>打开课程</h2><label for="urls">帖子网址（每行一个，最多 10 个）</label><textarea id="urls" rows="3" placeholder="https://wx.zsxq.com/topic/…"></textarea><button id="open">打开课程页面 ↗</button><p class="muted">在打开的页面中手动播放视频，识别完成后可加入下载队列。原课程页面和此下载页需要保持开启。</p></section>
+<p id="notice" role="status" aria-live="polite"></p>
+<section class="card"><div class="section-head"><h2>已识别的视频</h2><button id="clear">清除识别记录</button></div><label class="consent"><input id="consent" type="checkbox">我确认有权下载所选内容，仅用于允许的用途。</label><div id="captures"><p class="muted">尚未识别视频。安装扩展后，在官方页面刷新并播放课程。</p></div></section>
+<section class="card"><h2>下载队列</h2><div id="jobs"><p class="muted">下载完成后点击“保存 MP4”。</p></div></section>
+<footer>预览版 0.1.0 · 最大 600 MB / 3 小时 · 不支持 DRM、直播或轮换密钥<br><a href="privacy.html" target="_blank">隐私与权限说明</a> · 识别记录仅保留当前浏览器会话，30 分钟后过期。</footer>
+</main><script type="module" src="app.js"></script></body></html>
